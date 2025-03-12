@@ -1,4 +1,4 @@
-# VApp
+# VAPP
 
 ## Description
 
