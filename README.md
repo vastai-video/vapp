@@ -20,7 +20,7 @@ vappiCrop_8u_C3
 
 ## Installation
 
-./compile.sh
+./compile_linux.sh
 
 ## Usage
 
