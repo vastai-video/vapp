@@ -42,6 +42,7 @@ typedef struct {
     float saturation;   //chroma
     int device_id;
     int degree;
+    char *elf_file;
 } CommandLineArgs;
 
 

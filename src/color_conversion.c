@@ -194,7 +194,7 @@ static int config_csc_op(void * priv_params, uint32_t entry)
 }
 #endif
 
-VappStatus vappiColorToGray_8u_C3C1(unsigned int devID, const Vapp8u * pSrc, VappiSize oSrcSize, int nSrcStep, Vapp8u * pDst, int nDstStep)
+VappStatus vappiRGBToGray_8u_C3P1(unsigned int devID, const Vapp8u * pSrc, VappiSize oSrcSize, int nSrcStep, Vapp8u * pDst, int nDstStep)
 {
     rtError_t vaccRet;
     csc_input_params  in_params = {0};
@@ -241,7 +241,7 @@ VappStatus vappiColorToGray_8u_C3C1(unsigned int devID, const Vapp8u * pSrc, Vap
     return VAPP_SUCCESS;       
 }
 
-VappStatus vappiColorToGray_8u_C3C1R_Ctx(unsigned int devID, 
+VappStatus vappiRGBPToGray_8u_P3P1R_Ctx(unsigned int devID, 
                             const Vapp8u * pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u * pDst, int nDstStep, int nRoiNumber, VappiRect *pSizeROI, vastStream_t vastStreamCtx)
 {
@@ -306,7 +306,7 @@ VappStatus vappiColorToGray_8u_C3C1R_Ctx(unsigned int devID,
     return VAPP_SUCCESS;       
 }
 
-VappStatus vappiColorP2C_8u_P3C3R_Ctx(unsigned int devID, 
+VappStatus vappiRGBP2RGB_8u_P3C3R_Ctx(unsigned int devID, 
                             const Vapp8u * pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u * pDst, int nDstStep, int nRoiNumber, VappiRect *pSizeROI, vastStream_t vastStreamCtx)
 {
@@ -371,7 +371,7 @@ VappStatus vappiColorP2C_8u_P3C3R_Ctx(unsigned int devID,
     return VAPP_SUCCESS;       
 }
 
-VappStatus vappiColorC2P_8u_C3P3R_Ctx(unsigned int devID, const Vapp8u * pSrc, VappiSize oSrcSize, int nSrcStep, 
+VappStatus vappiRGB2RGBP_8u_C3P3R_Ctx(unsigned int devID, const Vapp8u * pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u * pDst, int nDstStep, int nRoiNumber, VappiRect *pSizeROI,  vastStream_t vastStreamCtx)
 {
     rtError_t vaccRet;

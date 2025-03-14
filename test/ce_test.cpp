@@ -225,7 +225,7 @@ static std::vector<VappiRect> get_roi(int x, int y, int w, int h, int roi_num,
 
 //         // remap
 //         const auto start_time = std::chrono::high_resolution_clock::now();
-//         vappiRemapFixedMap_8u_P1R_Ctx(device_id, src_img, map1, map2, src_size,
+//         vappiGrayRemapFixedMap_8u_P1R_Ctx(device_id, src_img, map1, map2, src_size,
 //             src_size.width, remap_dst_img, dst_remap_size,
 //             dst_remap_size.width, roi_num, remap_rois.data(),
 //             stream);
@@ -409,13 +409,13 @@ int test_remap_threshold_one_stream(vastStream_t stream, int repeat_time, int st
         vappSafeCall(vastMemcpy(device_id, src_img, pSrcImg, in_image_size,
             vastMemcpyHostToDevice), status);
         // remap
-        vappSafeCall(vappiRemapFixedMap_8u_P1R_Ctx(device_id, src_img, map1, map2, src_size,
+        vappSafeCall(vappiGrayRemapFixedMap_8u_P1R_Ctx(device_id, src_img, map1, map2, src_size,
             src_size.width, remap_img, remap_size,
             remap_size.width, roi_num, remap_rois.data(),
             stream), status);
 
         vappSafeCall(vastStreamSynchronize(device_id, stream), status);
-        printf("thread = %d, vappiRemapFixedMap_8u_P1R_Ctx\n", stream_id);
+        printf("thread = %d, vappiGrayRemapFixedMap_8u_P1R_Ctx\n", stream_id);
            // warp
         vappSafeCall(vappiWrapPerspective_8u_P1R_Ctx(device_id, remap_img, m_ptr, remap_size,
             remap_size.width, warp_img, warp_size,

@@ -207,7 +207,7 @@ inner_vappiUnsharp_8u_Px_Ctx(unsigned int devID,
 }
 
 VappStatus 
-vappiNV12Unsharp_8u_Px_Ctx(unsigned int devID, 
+vappiNV12Unsharp_8u_P2_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiShape2D oSrcShape, 
                             Vapp8u * pDst, VappiShape2D oDstShape, float nLumaAmount, float nChromAmount, vastStream_t vastStreamCtx)
 {
@@ -312,7 +312,7 @@ inner_vappiHqdn3d_8u_Px_Ctx(unsigned int devID,
 }
 
 VappStatus 
-vappiNV12Hqdn3d_8u_Px_Ctx(unsigned int devID, 
+vappiNV12Hqdn3d_8u_P2_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiShape2D oSrcShape, 
                             Vapp8u * pDst, VappiShape2D oDstShape, float luma_temporal  , float chroma_temporal   , vastStream_t vastStreamCtx)
 {
@@ -398,7 +398,7 @@ vappiYUV420Mirror_8u_P3_Ctx(unsigned int devID,
 }
 
 VappStatus 
-vappiNV12Mirror_8u_P3_Ctx(unsigned int devID, 
+vappiNV12Mirror_8u_P2_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiShape2D oSrcShape, 
                             Vapp8u * pDst, VappiShape2D oDstShape, vastStream_t vastStreamCtx, VappiAxis eAxis)
 {
@@ -484,7 +484,7 @@ vappiYUV420EQ_8u_P3_Ctx(unsigned int devID,
 }
 
 VappStatus
-vappiNV12EQ_8u_Px_Ctx(unsigned int devID, 
+vappiNV12EQ_8u_P2_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiShape2D oSrcShape, 
                             Vapp8u * pDst, VappiShape2D oDstShape, float brightness, 
                             float contrast, float saturation, vastStream_t vastStreamCtx)
@@ -554,14 +554,14 @@ static VappStatus inner_vappiBitDepthConvert_8u_P2_Ctx(unsigned int devID,
     return VAPP_SUCCESS;
 }
 
-VappStatus vappiBitDepthConvert_Bit10ToBit8_8u_P2_Ctx(unsigned int devID, 
+VappStatus vappiP010Bit10ToBit8_8u_P2_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiShape2D oSrcShape, 
                             Vapp8u * pDst, VappiShape2D oDstShape, vastStream_t vastStreamCtx)
 {
     return inner_vappiBitDepthConvert_8u_P2_Ctx(devID, pSrc, oSrcShape, pDst, oDstShape,BIT_10_TO_8,vastStreamCtx);  
 }
 
-VappStatus vappiBitDepthConvert_Bit8ToBit10_8u_P2_Ctx(unsigned int devID, 
+VappStatus vappiNV12Bit8ToBit10_8u_P2_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiShape2D oSrcShape, 
                             Vapp8u * pDst, VappiShape2D oDstShape, vastStream_t vastStreamCtx)
 {
@@ -725,7 +725,7 @@ inner_vappiRotate_8u_P3_Ctx(unsigned int devID, const Vapp8u * const pSrc, Vappi
 }
 
 VappStatus  
-vappiNV12Rotate_8u_P3_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiShape2D oSrcShape,
+vappiNV12Rotate_8u_P2_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiShape2D oSrcShape,
                             Vapp8u *pDst, VappiShape2D oDstShape, int nAngle, vastStream_t vastStreamCtx){
 
     return inner_vappiRotate_8u_P3_Ctx(devID, pSrc,  oSrcShape,pDst,  oDstShape, IMAGE_NV12, nAngle, vastStreamCtx);
@@ -817,7 +817,7 @@ VappStatus vappiNV12CSC_8u_P2_Ctx(unsigned int devID,const Vapp8u * const pSrc, 
                             oDstColorSpace, nDstFullRange, nPeakLuminance,nApproximateGamma,  nSceneReferred, vastStreamCtx);
 }
 
-VappStatus vappiYUV420CSC_8u_P2_Ctx(unsigned int devID,const Vapp8u * const pSrc, VappiShape2D oSrcShape,
+VappStatus vappiYUV420CSC_8u_P3_Ctx(unsigned int devID,const Vapp8u * const pSrc, VappiShape2D oSrcShape,
                             Vapp8u *pDst, VappiShape2D oDstShape,VappiColorSpace oSrcColorSpace, Vapp8u nSrcFullRange,
                             VappiColorSpace oDstColorSpace, Vapp8u nDstFullRange,Vapp64f nPeakLuminance,
                             Vapp8u nApproximateGamma, Vapp8u nSceneReferred,vastStream_t vastStreamCtx){
@@ -896,7 +896,7 @@ vappiYUV420Transpose_8u_P3_Ctx(unsigned int devID,
 }
 
 VappStatus 
-vappiNV12Transpose_8u_P3_Ctx(unsigned int devID, 
+vappiNV12Transpose_8u_P2_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiShape2D oSrcShape, 
                             Vapp8u * pDst, VappiShape2D oDstShape, vastStream_t vastStreamCtx, VappiTransposeDirection eDirection)
 {

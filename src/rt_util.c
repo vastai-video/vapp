@@ -852,7 +852,7 @@ rtError_t op_register(int vacc_id, OpRegister *reg_value)
         return -1;
     }
     uint32_t xxhash32_value = xxhash32(p_elf_ary, size_file,0);
-    snprintf(reg_value->uni_code, sizeof(reg_value->uni_code), "%lx", xxhash32_value);  
+    snprintf(reg_value->uni_code, sizeof(reg_value->uni_code), "%lx", (long)xxhash32_value);  
 #elif _WIN32
     if (!op_register_once) {
         GUID guid;

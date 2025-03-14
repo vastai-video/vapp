@@ -52,6 +52,7 @@ int parse_command_line(int argc, char *argv[], CommandLineArgs *args) {
         {"brightness", required_argument, 0, 0},
         {"contrast", required_argument, 0, 0},
         {"saturation", required_argument, 0, 0},
+        {"elf_file", required_argument, 0, 0},
         {"device_id", required_argument, 0, 'd'},
         {"degree", required_argument, 0, 0},
         {"help", no_argument, 0, 'h'},
@@ -141,6 +142,8 @@ int parse_command_line(int argc, char *argv[], CommandLineArgs *args) {
                 }
                 else if  (optarg && strcmp(long_options[option_index].name, "degree") == 0){
                     args->degree = strtod(optarg, (void*)&p);
+                }else if  (optarg && strcmp(long_options[option_index].name, "elf_file") == 0){
+                    args->elf_file = optarg;
                 }
                 
 

@@ -198,7 +198,7 @@ static int config_adaptive_threshold(void * priv_params, uint32_t entry)
 
 
 VappStatus 
-vappiAdaptiveThreshold_8u_P1R_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
+vappiGrayAdaptiveThreshold_8u_P1R_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u *pDst, int nDstStep, int nRoiNumber, VappiRect *pSizeROI, 
                             Vapp64f nThreshold, int nBlockSize, int nMaxValue, vastStream_t vastStreamCtx)                                                                         
 {

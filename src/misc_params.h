@@ -617,6 +617,7 @@ typedef struct{
     VappiShape * p_size_roi; 
     int nChaNum;
     void* ctx;
+    void * update_cfg_value[10];
 }geometry_input_params;
 
 //-------- Struct definition --------

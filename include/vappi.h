@@ -46,17 +46,17 @@ vappiNV12Resize_8u_P2_Ctx(unsigned int devID,
                             Vapp8u **pDst, VappiShape2D *oDstShape, int eInterpolation, vastStream_t vastStreamCtx);
 
 VAPP_API VappStatus 
-vappiYUV420Resize_8u_P3_Ctx(unsigned int devID, 
+vappiYUV420PResize_8u_P3_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiShape2D oSrcShape,
-                            Vapp8u **pDst, VappiShape2D *oDstShape, int eInterpolation, vastStream_t vastStreamCtx);
+                            Vapp8u *pDst, VappiShape2D oDstShape, int eInterpolation, vastStream_t vastStreamCtx);
 
 VappStatus 
-vappiYUV420_1_In_N_out_Resize_8u_P3_Ctx(unsigned int devID, 
+vappiYUV420Nout_Resize_8u_P3_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiShape2D oSrcShape,
                             Vapp8u **pDst, VappiShape2D *oDstShape,int oOutnumber,int eInterpolation, vastStream_t vastStreamCtx);
 
 VappStatus 
-vappiNV12_1_In_N_out_Resize_8u_P3_Ctx(unsigned int devID, 
+vappiNV12NoutResize_8u_P2_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiShape2D oSrcShape,
                             Vapp8u **pDst, VappiShape2D *oDstShape,int oOutnumber,int eInterpolation, vastStream_t vastStreamCtx);
 /**
@@ -71,60 +71,57 @@ vappiNV12Resize_8u_P2(unsigned int devID,
                             Vapp8u * pDst, VappiSize oDstSize, int nDstStep, int eInterpolation);
 
 VAPP_API VappStatus
-vappiResize_8u_C3(unsigned int devID, 
+vappiRGBResize_8u_C3(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u * pDst, VappiSize oDstSize, int nDstStep, int eInterpolation);
 
 VAPP_API VappStatus 
-vappiResizePlus_8u_P3_Ctx(unsigned int devID, 
+vappiRGBPResizePlus_8u_P3_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u * pDst, VappiSize oDstSize, int nDstStep, int nCropwidth, int nCropHeight, int eInterpolation, vastStream_t vastStreamCtx);
 
 VAPP_API VappStatus 
-vappiResizePlus_8u_P1_Ctx(unsigned int devID, 
+vappiGrayResizePlus_8u_P1_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u * pDst, VappiSize oDstSize, int nDstStep, VappiRect oCropSize, int eInterpolation, vastStream_t vastStreamCtx);                            
 
 VAPP_API VappStatus
-vappiResize_8u_C3_Ctx(unsigned int devID, 
+vappiRGBResize_8u_C3_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u * pDst, VappiSize oDstSize, int nDstStep, int eInterpolation, vastStream_t vastStreamCtx);                         
 
 VAPP_API VappStatus 
-vappiResize_8u_P3_Ctx(unsigned int devID, 
+vappiRGBPResize_8u_P3_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u * pDst, VappiSize oDstSize, int nDstStep, int eInterpolation, vastStream_t vastStreamCtx);
 
 VAPP_API VappStatus 
-vappiResize_8u_P1_Ctx(unsigned int devID, 
+vappiGrayResize_8u_P1_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u * pDst, VappiSize oDstSize, int nDstStep, int eInterpolation, vastStream_t vastStreamCtx);
 
 VAPP_API VappStatus
-vappiCrop_8u_C3(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
+vappiRGBCrop_8u_C3(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u * pDst, VappiRect oCropSize, int nDstStep);
 
 VAPP_API VappStatus
-vappiCrop_8u_C3R_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
+vappiRGBCrop_8u_C3R_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u * pDst, VappiRect oCropSize, int nDstStep, int nRoiNumber, VappiRect *pSizeROI, vastStream_t vastStreamCtx);
 
 VAPP_API VappStatus
-vappiCrop_8u_P3R_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
+vappiRGBPCrop_8u_P3R_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u * pDst, VappiRect oCropSize, int nDstStep, int nRoiNumber, VappiRect *pSizeROI, vastStream_t vastStreamCtx);
 
 VAPP_API VappStatus 
-vappiCrop_8u_P1R_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
+vappiGrayCrop_8u_P1R_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u * pDst, VappiRect oCropSize, int nDstStep, int nRoiNumber, VappiRect *pSizeROI, vastStream_t vastStreamCtx);
 
 VAPP_API VappStatus 
-vappiRGBAPLANARRotate_8u_P4(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
+vappiRGBAPRotate_8u_P4(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u *pDst, int nDstStep, int nAngle);
-VAPP_API VappStatus 
-vappiRGBAPLANARRotate_8u_P4_Ctx_single(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
-                            Vapp8u *pDst, int nDstStep, int nAngle, int nRoiNumber, VappiRect *pSizeROI, vastStream_t vastStreamCtx);
 
 VAPP_API VappStatus 
-vappiRGBAPLANARRotate_8u_P4_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
+vappiRGBAPRotate_8u_P4_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u *pDst, int nDstStep, int nAngle, int nRoiNumber, VappiRect *pSizeROI, vastStream_t vastStreamCtx);
 
 /**
@@ -143,31 +140,31 @@ vappiNV12Mirror_8u_P2(unsigned int devID, const Vapp8u * const pSrc, VappiSize o
                             Vapp8u *pDst, int nDstStep, VappiAxis eAxis);  
 
 VAPP_API VappStatus
-vappiMirror_8u_P3R_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
+vappiRGBPMirror_8u_P3R_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u *pDst, int nDstStep, VappiAxis eAxis, int nRoiNumber, VappiRect *pSizeROI, vastStream_t vastStreamCtx);    
 VAPP_API VappStatus 
-vappiMirror_8u_P1R_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
+vappiGrayMirror_8u_P1R_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u *pDst, int nDstStep, VappiAxis eAxis, int nRoiNumber, VappiRect *pSizeROI, vastStream_t vastStreamCtx);                                                    
 
 
 VAPP_API VappStatus
-vappiRemap_8u_P3R_Ctx(unsigned int devID, const Vapp8u * const pSrc, const Vapp32f * const pMap1, const Vapp32f * const pMap2, VappiSize oSrcSize, int nSrcStep, 
+vappiRGBPRemap_8u_P3R_Ctx(unsigned int devID, const Vapp8u * const pSrc, const Vapp32f * const pMap1, const Vapp32f * const pMap2, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u *pDst, VappiSize oDstSize, int nDstStep, int nRoiNumber, VappiRect *pSizeROI, vastStream_t vastStreamCtx);
 
 VAPP_API VappStatus 
-vappiRemap_8u_P1R_Ctx(unsigned int devID, const Vapp8u * const pSrc, const Vapp32f * const pMap1, const Vapp32f * const pMap2, VappiSize oSrcSize, int nSrcStep, 
+vappiGrayRemap_8u_P1R_Ctx(unsigned int devID, const Vapp8u * const pSrc, const Vapp32f * const pMap1, const Vapp32f * const pMap2, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u *pDst, VappiSize oDstSize, int nDstStep, int nRoiNumber, VappiRect *pSizeROI, vastStream_t vastStreamCtx);
 
 VAPP_API VappStatus 
-vappiWrapPerspective_8u_P3R_Ctx(unsigned int devID, const Vapp8u * const pSrc, const Vapp64f * const pM,  VappiSize oSrcSize, int nSrcStep, 
+vappiRGBPWrapPerspective_8u_P3R_Ctx(unsigned int devID, const Vapp8u * const pSrc, const Vapp64f * const pM,  VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u *pDst, VappiSize oDstSize, int nDstStep, int nRoiNumber, VappiRect *pSizeROI, vastStream_t vastStreamCtx);
 
 
 VAPP_API VappStatus 
-vappiWrapPerspective_8u_P1R_Ctx(unsigned int devID, const Vapp8u * const pSrc, const Vapp64f * const pM,  VappiSize oSrcSize, int nSrcStep, 
+vappiGrayWrapPerspective_8u_P1R_Ctx(unsigned int devID, const Vapp8u * const pSrc, const Vapp64f * const pM,  VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u *pDst, VappiSize oDstSize, int nDstStep, int nRoiNumber, VappiRect *pSizeROI, vastStream_t vastStreamCtx);
 VAPP_API VappStatus  
-vappiRemapFixedMap_8u_P1R_Ctx(unsigned int devID, const Vapp8u * const pSrc, const Vapp16s * const pMap1, const Vapp16u * const pMap2, VappiSize oSrcSize, int nSrcStep, 
+vappiGrayRemapFixedMap_8u_P1R_Ctx(unsigned int devID, const Vapp8u * const pSrc, const Vapp16s * const pMap1, const Vapp16u * const pMap2, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u *pDst, VappiSize oDstSize, int nDstStep, int nRoiNumber, VappiRect *pSizeROI, vastStream_t vastStreamCtx);                           
 
 //color space conversion 
@@ -194,15 +191,15 @@ vappiRemapFixedMap_8u_P1R_Ctx(unsigned int devID, const Vapp8u * const pSrc, con
  * \param oSizeROI \ref roi_specification.
  * \return \ref image_data_error_codes, \ref roi_error_codes
  */
-VAPP_API VappStatus vappiColorToGray_8u_C3C1(unsigned int devID, const Vapp8u * pSrc, VappiSize oSrcSize, int nSrcStep, Vapp8u * pDst, int nDstStep);
+VAPP_API VappStatus vappiRGBToGray_8u_C3P1(unsigned int devID, const Vapp8u * pSrc, VappiSize oSrcSize, int nSrcStep, Vapp8u * pDst, int nDstStep);
 
-VAPP_API VappStatus vappiColorToGray_8u_C3C1R_Ctx(unsigned int devID, const Vapp8u * pSrc, VappiSize oSrcSize, int nSrcStep, 
+VAPP_API VappStatus vappiRGBPToGray_8u_P3P1R_Ctx(unsigned int devID, const Vapp8u * pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u * pDst, int nDstStep, int nRoiNumber, VappiRect *pSizeROI, vastStream_t vastStreamCtx);
 
-VAPP_API VappStatus vappiColorP2C_8u_P3C3R_Ctx(unsigned int devID, const Vapp8u * pSrc, VappiSize oSrcSize, int nSrcStep, 
+VAPP_API VappStatus vappiRGBP2RGB_8u_P3C3R_Ctx(unsigned int devID, const Vapp8u * pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u * pDst, int nDstStep, int nRoiNumber, VappiRect *pSizeROI, vastStream_t vastStreamCtx);
 
-VAPP_API VappStatus vappiColorC2P_8u_C3P3R_Ctx(unsigned int devID, const Vapp8u * pSrc, VappiSize oSrcSize, int nSrcStep, 
+VAPP_API VappStatus vappiRGB2RGBP_8u_C3P3R_Ctx(unsigned int devID, const Vapp8u * pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u * pDst, int nDstStep, int nRoiNumber, VappiRect *pSizeROI,  vastStream_t vastStreamCtx);
 
 /** @defgroup rgbtoyuv RGBToYUV 
@@ -239,7 +236,7 @@ VAPP_API VappStatus vappiRGBToYUV420_8u_C3P3R(const Vapp8u * pSrc, int nSrcStep,
                                                                                                                                         
 
 VAPP_API VappStatus 
-vappiAdaptiveThreshold_8u_P1R_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
+vappiGrayAdaptiveThreshold_8u_P1R_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u *pDst, int nDstStep, int nRoiNumber, VappiRect *pSizeROI, 
                             Vapp64f nThreshold, int nBlockSize, int nMaxValue, vastStream_t vastStreamCtx);                                                                          
 /** @} end of Image Processing module */
@@ -247,28 +244,20 @@ vappiAdaptiveThreshold_8u_P1R_Ctx(unsigned int devID, const Vapp8u * const pSrc,
 
 
 VAPP_API VappStatus 
-vappiTranslateTransform_8u_P1R_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
+vappiGrayTranslateTransform_8u_P1R_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
                             Vapp8u *pDst, int nDstStep, int nRoiNumber, VappiRect *pSizeROI, 
                             Vapp64f nOffsetX, Vapp64f nOffsetY, vastStream_t vastStreamCtx);
 
 VAPP_API VappStatus 
-vappiTranspose_8u_P1R_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
+vappiGrayTranspose_8u_P1R_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiSize oSrcSize, int nSrcStep, 
                         Vapp8u *pDst, int nDstStep, int nRoiNumber, VappiRect *pSizeROI,vastStream_t vastStreamCtx);                            
 
 VAPP_API VappStatus
 vappiYUV420SAD_8u_P3(unsigned int devID,const Vapp8u * const pSrc, const Vapp8u * const pSrc2,
                         VappiSize oSrcSize, int nSrcStep, const Vapp8u * const pDst);
 
-VAPP_API VappStatus
-vappiStaticTextDetection_8u_P3_ctx(unsigned int devID, VappiTextDetectionBuffers *buffers, VappiSize oSrcSize, Vapp32u nSrcStep,
-                        VappiTextDetectionParam *param, Vapp8u first_frame, vastStream_t vastStreamCtx);
-
-VAPP_API VappStatus
-vappiStaticTextDetection_8u_P3_Host(unsigned int devID, VappiTextDetectionBuffers *buffers, VappiSize oSrcSize, Vapp32u nSrcStep,
-                        VappiTextDetectionParam *param, Vapp8u first_frame);
-
 VAPP_API VappStatus 
-vappiNV12Unsharp_8u_Px_Ctx(unsigned int devID, 
+vappiNV12Unsharp_8u_P2_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiShape2D oSrcShape, 
                             Vapp8u * pDst, VappiShape2D oDstShape, float nLumaAmount, float nChromAmount, vastStream_t vastStreamCtx);
 
@@ -278,7 +267,7 @@ vappiYUV420Unsharp_8u_P3_Ctx(unsigned int devID,
                             Vapp8u * pDst, VappiShape2D oDstShape, float nLumaAmount, float nChromAmount, vastStream_t vastStreamCtx);
 
 VAPP_API VappStatus
-vappiNV12Hqdn3d_8u_Px_Ctx(unsigned int devID, 
+vappiNV12Hqdn3d_8u_P2_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiShape2D oSrcShape, 
                             Vapp8u * pDst, VappiShape2D oDstShape, float luma_temporal  , float chroma_temporal   , vastStream_t vastStreamCtx);
 
@@ -292,7 +281,7 @@ vappiYUV420Mirror_8u_P3_Ctx(unsigned int devID,
                             const Vapp8u * const pSrc, VappiShape2D oSrcShape, 
                             Vapp8u * pDst, VappiShape2D oDstShape, vastStream_t vastStreamCtx, VappiAxis eAxis);
 VAPP_API VappStatus
-vappiNV12Mirror_8u_P3_Ctx(unsigned int devID, 
+vappiNV12Mirror_8u_P2_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiShape2D oSrcShape, 
                             Vapp8u * pDst, VappiShape2D oDstShape, vastStream_t vastStreamCtx, VappiAxis eAxis);
 
@@ -302,17 +291,17 @@ vappiYUV420EQ_8u_P3_Ctx(unsigned int devID,
                             Vapp8u * pDst, VappiShape2D oDstShape, float brightness, float contrast, float saturation, vastStream_t vastStreamCtx);
 
 VAPP_API VappStatus
-vappiNV12EQ_8u_Px_Ctx(unsigned int devID, 
+vappiNV12EQ_8u_P2_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiShape2D oSrcShape, 
                             Vapp8u * pDst, VappiShape2D oDstShape, float brightness, float contrast, float saturation, vastStream_t vastStreamCtx);
 
 VAPP_API VappStatus 
-vappiBitDepthConvert_Bit8ToBit10_8u_P2_Ctx(unsigned int devID, 
+vappiNV12Bit8ToBit10_8u_P2_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiShape2D oSrcShape, 
                             Vapp8u * pDst, VappiShape2D oDstShape, vastStream_t vastStreamCtx);
 
 VAPP_API VappStatus 
-vappiBitDepthConvert_Bit10ToBit8_8u_P2_Ctx(unsigned int devID, 
+vappiP010Bit10ToBit8_8u_P2_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiShape2D oSrcShape, 
                             Vapp8u * pDst, VappiShape2D oDstShape, vastStream_t vastStreamCtx);
 
@@ -338,7 +327,7 @@ vappiBayerGBGRToNV12_8u_C1P2_Ctx(unsigned int devID,
 
                             
 VAPP_API VappStatus 
-vappiNV12Rotate_8u_P3_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiShape2D oSrcShape,
+vappiNV12Rotate_8u_P2_Ctx(unsigned int devID, const Vapp8u * const pSrc, VappiShape2D oSrcShape,
                             Vapp8u *pDst, VappiShape2D oDstShape, int nAngle, vastStream_t vastStreamCtx);
 
 VAPP_API VappStatus  
@@ -353,7 +342,7 @@ vappiNV12CSC_8u_P2_Ctx(unsigned int devID,const Vapp8u * const pSrc, VappiShape2
                             Vapp8u nApproximateGamma, Vapp8u nSceneReferred,vastStream_t vastStreamCtx);
 
 VAPP_API VappStatus 
-vappiYUV420CSC_8u_P2_Ctx(unsigned int devID,const Vapp8u * const pSrc, VappiShape2D oSrcShape,
+vappiYUV420CSC_8u_P3_Ctx(unsigned int devID,const Vapp8u * const pSrc, VappiShape2D oSrcShape,
                             Vapp8u *pDst, VappiShape2D oDstShape,VappiColorSpace oSrcColorSpace, Vapp8u nSrcFullRange,
                             VappiColorSpace oDstColorSpace, Vapp8u nDstFullRange,Vapp64f nPeakLuminance,
                             Vapp8u nApproximateGamma, Vapp8u nSceneReferred,vastStream_t vastStreamCtx);
@@ -364,7 +353,7 @@ vappiYUV420Transpose_8u_P3_Ctx(unsigned int devID,
                             Vapp8u * pDst, VappiShape2D oDstShape, vastStream_t vastStreamCtx, VappiTransposeDirection eDirection);
 
 VAPP_API VappStatus 
-vappiNV12Transpose_8u_P3_Ctx(unsigned int devID, 
+vappiNV12Transpose_8u_P2_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiShape2D oSrcShape, 
                             Vapp8u * pDst, VappiShape2D oDstShape, vastStream_t vastStreamCtx, VappiTransposeDirection eDirection);
 
@@ -374,13 +363,13 @@ vappiNV12Overlay_8u_P2_Ctx(unsigned int devID, const Vapp8u * const pSrc1, Vappi
                             Vapp8u *pSrc2, VappiShape2D  oSrc2Shape, int nX, int nY, vastStream_t vastStreamCtx);
 
 VAPP_API VappStatus
-vappiYUV420_1_In_N_out_Cropscale_8u_P3_Ctx(unsigned int devID, 
+vappiYUV420Nout_Cropscale_8u_P3_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiShape2D oSrcShape, 
                             Vapp8u **pDst, VappiShape2D *oDstShape, int offsetWidth, int offsetHeight, int cropWidth, int cropHeight,
                             int oOutnumber, int eInterpolation, vastStream_t vastStreamCtx);
 
 VAPP_API VappStatus
-vappiNV12_1_In_N_out_Cropscale_8u_P3_Ctx(unsigned int devID, 
+vappiNV12Nout_Cropscale_8u_P2_Ctx(unsigned int devID, 
                             const Vapp8u * const pSrc, VappiShape2D oSrcShape, 
                             Vapp8u **pDst, VappiShape2D *oDstShape, int offsetWidth, int offsetHeight, int cropWidth, int cropHeight,
                             int oOutnumber, int eInterpolation, vastStream_t vastStreamCtx);

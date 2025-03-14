@@ -37,9 +37,15 @@ static int parse_config(char * path)
     if(!fp_cfg){
         fprintf(stderr, "open %s fail\n", path);
     }
-    fgets(a_line, 200,fp_cfg); sscanf(a_line, "%s",map1file);
-    fgets(a_line, 200,fp_cfg); sscanf(a_line, "%s",map2file);
-    fgets(a_line, 200,fp_cfg); sscanf(a_line, "%s",case_path);
+    if(fgets(a_line, 200,fp_cfg) != NULL){
+        sscanf(a_line, "%s",map1file);
+    }
+    if(fgets(a_line, 200,fp_cfg) != NULL){
+        sscanf(a_line, "%s",map2file);
+    } 
+    if(fgets(a_line, 200,fp_cfg) != NULL){
+        sscanf(a_line, "%s",case_path);
+    } 
 
     fclose(fp_cfg);
     return 0;
@@ -150,9 +156,16 @@ int test_remap_threshold(void *arg)
     map2h_p1 = malloc(op_cfg.out_plane_size * sizeof(Vapp32f)); 
     fp_map1_p1 = fopen(map1file, "rb");
     fp_map2_p1 = fopen(map2file, "rb");
-    fread(map1h_p1, op_cfg.out_plane_size* sizeof(Vapp32f), 1, fp_map1_p1);
-    fread(map2h_p1, op_cfg.out_plane_size* sizeof(Vapp32f), 1, fp_map2_p1);
-
+    size_t reads = fread(map1h_p1, op_cfg.out_plane_size* sizeof(Vapp32f), 1, fp_map1_p1);
+    if(reads != 1){
+        fprintf(stderr, "fread failed. %zu\n", reads);
+        return -1;
+    }    
+    reads = fread(map2h_p1, op_cfg.out_plane_size* sizeof(Vapp32f), 1, fp_map2_p1);
+    if(reads != 1){
+        fprintf(stderr, "fread failed. %zu\n", reads);
+        return -1;
+    }    
     fclose(fp_map1_p1);
     fclose(fp_map2_p1);
 
@@ -166,14 +179,14 @@ int test_remap_threshold(void *arg)
     vappSafeCall(vastMemcpy(op_cfg.device_id, map1_p1, map1h_p1, op_cfg.out_plane_size * sizeof(Vapp32f), vastMemcpyHostToDevice), status); 
     vappSafeCall(vastMemcpy(op_cfg.device_id, map2_p1, map2h_p1, op_cfg.out_plane_size * sizeof(Vapp32f), vastMemcpyHostToDevice), status); 
     for(i = 0; i < stream_arg->frame_count; i++){
-        size_t reads = fread((void *)pSrcImg, op_cfg.image_size, 1, fp_in);
+        reads = fread((void *)pSrcImg, op_cfg.image_size, 1, fp_in);
         if(reads != 1){
             fprintf(stderr, "fread failed. %zu\n", reads);
             return -1;
         }
         vappSafeCall(vastMemcpy(op_cfg.device_id, op_cfg.src_img, pSrcImg, op_cfg.image_size, vastMemcpyHostToDevice), status);  
         start = time_usec(); 
-        vappSafeCall(vappiRemap_8u_P1R_Ctx(op_cfg.device_id,
+        vappSafeCall(vappiGrayRemap_8u_P1R_Ctx(op_cfg.device_id,
                             op_cfg.src_img, map1_p1, map2_p1, op_cfg.oSrcSize, op_cfg.nSrcStep,  
                             tmp_img, op_cfg.oDstSize, op_cfg.nDstStep, roi_num, rRemapP1ROI, stream), status);                                 
         vappSafeCall(vastStreamSynchronize(op_cfg.device_id, stream), status);  
@@ -183,7 +196,7 @@ int test_remap_threshold(void *arg)
         printf("elapsed %"PRId64" us sum %"PRId64" us\n", elapsed,sum);
 
         start = time_usec();
-        vappSafeCall(vappiAdaptiveThreshold_8u_P1R_Ctx(cfg.device_id, 
+        vappSafeCall(vappiGrayAdaptiveThreshold_8u_P1R_Ctx(cfg.device_id, 
                             tmp_img, cfg.oSrcSize, cfg.nSrcStep,  
                             op_cfg.dst_img, cfg.nDstStep, roi_num, oRoi, nThreshold, nBlockSize, nMaxValue, stream), status);
         vappSafeCall(vastStreamSynchronize(cfg.device_id, stream), status);                            
@@ -274,9 +287,16 @@ int test_c2p_remap(CommandLineArgs *args, OperatorCfg* iop_cfg, FILE *fp_input, 
         fprintf(stderr, "unsupport dst width %d\n", op_cfg.oDstSize.width);
         return -1;
     }
-    fread(map1h, op_cfg.out_plane_size* sizeof(Vapp32f), 1, fp_map1);
-    fread(map2h, op_cfg.out_plane_size* sizeof(Vapp32f), 1, fp_map2);
-    
+    size_t reads = fread(map1h, op_cfg.out_plane_size* sizeof(Vapp32f), 1, fp_map1);
+    if(reads != 1){
+        fprintf(stderr, "fread failed. %zu\n", reads);
+        return -1;
+    }    
+    reads = fread(map2h, op_cfg.out_plane_size* sizeof(Vapp32f), 1, fp_map2);
+    if(reads != 1){
+        fprintf(stderr, "fread failed. %zu\n", reads);
+        return -1;
+    }    
     fclose(fp_map1);
     fclose(fp_map2);
 
@@ -312,9 +332,9 @@ int test_c2p_remap(CommandLineArgs *args, OperatorCfg* iop_cfg, FILE *fp_input, 
                 return -1;
             }
         }
-        int reads = fread((void *)pSrcImg, op_cfg.image_size, 1, fp_input1);
+        reads = fread((void *)pSrcImg, op_cfg.image_size, 1, fp_input1);
         if(reads != 1){
-            fprintf(stderr, "fread failed. %d\n", reads);
+            fprintf(stderr, "fread failed. %ld\n", reads);
             return -1;
         }
         fclose(fp_input1);              
@@ -322,7 +342,7 @@ int test_c2p_remap(CommandLineArgs *args, OperatorCfg* iop_cfg, FILE *fp_input, 
 
 
         start = time_usec(); 
-        vappSafeCall(vappiColorC2P_8u_C3P3R_Ctx(cvt_cfg.device_id, 
+        vappSafeCall(vappiRGB2RGBP_8u_C3P3R_Ctx(cvt_cfg.device_id, 
                             op_cfg.src_img, cvt_cfg.oSrcSize, cvt_cfg.nSrcStep,  
                             cvt_img, cvt_cfg.nDstStep, roi_num, oC2PROI, stream), status);                                 
         vappSafeCall(vastStreamSynchronize(op_cfg.device_id, stream), status);  
@@ -336,7 +356,7 @@ int test_c2p_remap(CommandLineArgs *args, OperatorCfg* iop_cfg, FILE *fp_input, 
         // fwrite(pDstImg, cvt_cfg.out_image_size, 1,fp_cvt);          
         // fclose(fp_cvt);
 
-        vappSafeCall(vappiRemap_8u_P3R_Ctx(op_cfg.device_id,
+        vappSafeCall(vappiRGBPRemap_8u_P3R_Ctx(op_cfg.device_id,
                             cvt_img, map1, map2, op_cfg.oSrcSize, op_cfg.nSrcStep,  
                             op_cfg.dst_img, op_cfg.oDstSize, op_cfg.nDstStep, roi_num, rRemapROI, stream), status);                                 
         vappSafeCall(vastStreamSynchronize(op_cfg.device_id, stream), status);     

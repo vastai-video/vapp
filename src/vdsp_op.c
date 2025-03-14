@@ -168,6 +168,9 @@ VappStatus vapp_run_op_multi(unsigned int devID, op_params *op_par)
 	// start = time_usec();	
     for(i = 0;i  < op_par->block_num; i++){
         op_par->block_id = i;
+        if(op_par->update_cfg){
+            op_par->update_cfg(op_par->priv_params);
+        }        
         if(op_par->config_op_params(op_par->priv_params, func_entry) < 0){
             return VAPP_RESIZE_NO_OPERATION_ERROR;
         }
@@ -451,13 +454,6 @@ VappStatus vapp_run_op_multi_async(unsigned int devID, op_params *op_par, VastSt
         //VAPP_LOG(VAPP_LOG_INFO,"%s %d %s here pthread_self()=%ld stream->frame_num=%d\n",__FILE__,__LINE__,__FUNCTION__,pthread_self(), stream->frame_num);        
     }
 
-    // op_par->block_id = i;
-    // if(op_par->update_cfg){
-    //     op_par->update_cfg(op_par->priv_params);
-    // }
-    // if(op_par->config_op_params(op_par->priv_params, stream->fun) < 0){
-    //     return VAPP_RESIZE_NO_OPERATION_ERROR;
-    // }
     return VAPP_SUCCESS;    
 }   
 
