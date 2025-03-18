@@ -169,7 +169,9 @@ VappStatus vapp_run_op_multi(unsigned int devID, op_params *op_par)
     for(i = 0;i  < op_par->block_num; i++){
         op_par->block_id = i;
         if(op_par->update_cfg){
-            op_par->update_cfg(op_par->priv_params);
+            if(op_par->update_cfg(op_par->priv_params)){
+                return VAPP_ERROR;
+            }
         }        
         if(op_par->config_op_params(op_par->priv_params, func_entry) < 0){
             return VAPP_RESIZE_NO_OPERATION_ERROR;

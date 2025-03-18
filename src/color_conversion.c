@@ -4,17 +4,6 @@
 
 typedef uint16_t ColorSpaceUint16_t;
 
-typedef struct{
-    op_params op_par;
-    int width;
-    int height;
-    int src_step;
-    int dst_step;
-    cvt_color_t cfg;
-    VappiSize *oDstSize;
-    int nOutputs;
-    int eInterpolation;    
-}cvtcolor_params;
 
 typedef struct {
     int      image_width;          ///<
@@ -40,55 +29,12 @@ typedef struct{
     int nOutputs; 
 }csc_input_params;
 
-// static int config_csc_op_async(void * priv_params, uint32_t entry)
-// {
-//     int i = 0;
-//     csc_input_params *in_params = (csc_input_params *)priv_params;
-//     int nb_outputs = in_params->nOutputs;
-//     op_info_t * op_info = &in_params->op_par.op_info;
-
-//     op_info->op_addr = entry;
-//     op_info->op_type = GET_OUTPUT_FLAG;//reserved
-//     /* argument */
-//     op_info->argument_size = sizeof(op_args_args_t);
-//     if(!op_info->argument)
-//     op_info->argument = calloc(1, op_info->argument_size);
-//     op_args_args_t *p = (op_args_args_t *)op_info->argument;    
-//     p->seperator = 556082218;
-//     p->loopCount = 1;
-//     p->batchSize = 1;
-//     p->configCount = 1;
-//     p->inputCount = 1;
-//     p->outputCount = nb_outputs;
-//     p->config = 0;//runtime 分配完config内存填写地址
-//     for(i =0; i < MAX_IN_OUT_ADDR; i++){
-//         if(in_params->op_par.inout_addr[i]){
-//             p->inout_addr[i] = in_params->op_par.inout_addr[i];
-//         }else{
-//             break;
-//         }
-//     }    
-//     /* config */
-//     // in_params->op_par.config.config = (void *)cfg;
-//     // in_params->op_par.config.size = sizeof(*cfg);
-//     op_info->config_array = &in_params->op_par.config;
-//     op_info->config_num = 1;
-//     return 0;
-// }  
-
-static int config_csc_op_async_roi(void * priv_params, uint32_t entry)
+static int config_color_conversion_op(void * priv_params, uint32_t entry)
 {
     int i = 0;
-    csc_input_params *in_params = (csc_input_params *)priv_params;
-    int nb_outputs = in_params->nOutputs;
+    csc_input_params * in_params = (csc_input_params *)priv_params;
     op_info_t * op_info = &in_params->op_par.op_info;
-    cvtcolor_roi_extop_t *cfg = &in_params->cvtcolor_roi_cfg;
-
-    cfg->roi.x = in_params->pSizeROI[in_params->op_par.block_id].x;
-    cfg->roi.y = in_params->pSizeROI[in_params->op_par.block_id].y;
-    cfg->roi.w = in_params->pSizeROI[in_params->op_par.block_id].width;
-    cfg->roi.h = in_params->pSizeROI[in_params->op_par.block_id].height;
-
+    int nb_outputs = in_params->nOutputs;
     op_info->op_addr = entry;
     op_info->op_type = GET_OUTPUT_FLAG;//reserved
     /* argument */
@@ -109,90 +55,30 @@ static int config_csc_op_async_roi(void * priv_params, uint32_t entry)
         }else{
             break;
         }
-    }    
-    /* config */
-    in_params->op_par.config.config = (void *)cfg;
-    in_params->op_par.config.size = sizeof(*cfg);
-    op_info->config_array = &in_params->op_par.config;
-    op_info->config_num = 1;
-    return 0;
-}  
-
-static int config_cvtcolor_op(void * priv_params, uint32_t entry)
-{
-    int i = 0;
-    csc_input_params * in_params = (csc_input_params *)priv_params;
-    op_info_t * op_info = &in_params->op_par.op_info;
-    cvt_color_t *cfg = &in_params->cvtcolor_cfg;
-             
-    cfg->cvt_type = COLOR_RGB2GRAY_INTERLEAVE;
-
-    op_info->op_addr = entry;
-    op_info->op_type = GET_OUTPUT_FLAG;//reserved
-    /* argument */
-    op_info->argument_size = sizeof(op_args_args_t);
-    if(!op_info->argument)
-    op_info->argument = calloc(1, op_info->argument_size);
-    op_args_args_t *p = (op_args_args_t *)op_info->argument;    
-    p->seperator = 556082218;
-    p->loopCount = 1;
-    p->batchSize = 1;
-    p->configCount = 1;
-    p->inputCount = 1;
-    p->outputCount = 1;
-    p->config = 0;//runtime 分配完config内存填写地址
-    for(i =0; i < MAX_IN_OUT_ADDR; i++){
-        if(in_params->op_par.inout_addr[i]){
-            p->inout_addr[i] = in_params->op_par.inout_addr[i];
-        }else{
-            break;
-        }
     }
     
     /* config */
-    in_params->op_par.config.config = (void *)cfg;
-    in_params->op_par.config.size = sizeof(*cfg);
+    // in_params->op_par.config.config = (void *)cfg;
+    // in_params->op_par.config.size = sizeof(*cfg);
     op_info->config_array = &in_params->op_par.config;
     op_info->config_num = 1;
     return 0;
 }
 
-#if 0
-static int config_csc_op(void * priv_params, uint32_t entry)
+
+static int update_cvtcolor_roi(void * priv_params)
 {
-    int i = 0;
-    csc_input_params * in_params = (csc_input_params *)priv_params;
-    op_info_t * op_info = &in_params->op_par.op_info;
-             
-    op_info->op_addr = entry;
-    op_info->op_type = GET_OUTPUT_FLAG;//reserved
-    /* argument */
-    op_info->argument_size = sizeof(op_args_args_t);
-    if(!op_info->argument)
-    op_info->argument = calloc(1, op_info->argument_size);
-    op_args_args_t *p = (op_args_args_t *)op_info->argument;    
-    p->seperator = 556082218;
-    p->loopCount = 1;
-    p->batchSize = 1;
-    p->configCount = 1;
-    p->inputCount = 1;
-    p->outputCount = 1;
-    p->config = 0;//runtime 分配完config内存填写地址
-    for(i =0; i < MAX_IN_OUT_ADDR; i++){
-        if(in_params->op_par.inout_addr[i]){
-            p->inout_addr[i] = in_params->op_par.inout_addr[i];
-        }else{
-            break;
-        }
-    }
-    /* config */
-    // in_params->op_par.config.config = (void *)&in_params->csc_cfg;
-    // in_params->op_par.config.size = sizeof(in_params->csc_cfg);
-    op_info->config_array = &in_params->op_par.config;
-    op_info->config_num = 1;
+    csc_input_params *in_params = (csc_input_params *)priv_params;
+    cvtcolor_roi_extop_t *cfg = &in_params->cvtcolor_roi_cfg;
+
+    cfg->roi.x = in_params->pSizeROI[in_params->op_par.block_id].x;
+    cfg->roi.y = in_params->pSizeROI[in_params->op_par.block_id].y;
+    cfg->roi.w = in_params->pSizeROI[in_params->op_par.block_id].width;
+    cfg->roi.h = in_params->pSizeROI[in_params->op_par.block_id].height;    
     return 0;
 }
-#endif
+
+
 
 VappStatus vappiRGBToGray_8u_C3P1(unsigned int devID, const Vapp8u * pSrc, VappiSize oSrcSize, int nSrcStep, Vapp8u * pDst, int nDstStep)
 {
@@ -228,7 +114,7 @@ VappStatus vappiRGBToGray_8u_C3P1(unsigned int devID, const Vapp8u * pSrc, Vappi
 
     in_params.nOutputs = 1;    
     in_params.op_par.priv_params = &in_params;
-    in_params.op_par.config_op_params = config_cvtcolor_op;
+    in_params.op_par.config_op_params = config_color_conversion_op;
 
     vaccRet = vapp_run_op(devID, &in_params.op_par);
     if(vaccRet!= rtSuccess){
@@ -294,8 +180,10 @@ VappStatus vappiRGBPToGray_8u_P3P1R_Ctx(unsigned int devID,
     in_params.op_par.block_num = nRoiNumber;
     // in_params.op_par.config.config = (void *)&in_params.cvtcolor_roi_cfg;
     // in_params.op_par.config.size = sizeof(in_params.cvtcolor_roi_cfg);    
-    in_params.op_par.config_op_params = config_csc_op_async_roi;
-
+    in_params.op_par.config_op_params = config_color_conversion_op;
+    in_params.op_par.update_cfg = update_cvtcolor_roi;
+    in_params.op_par.config.config = (void *)&in_params.cvtcolor_roi_cfg;
+    in_params.op_par.config.size = sizeof(in_params.cvtcolor_roi_cfg);
     // stream->op_async->block_num = in_params.op_par.block_num;
     vaccRet = vapp_run_op_multi_async(devID, &in_params.op_par, stream);
     if(vaccRet!= rtSuccess){
@@ -359,8 +247,10 @@ VappStatus vappiRGBP2RGB_8u_P3C3R_Ctx(unsigned int devID,
     in_params.op_par.block_num = nRoiNumber;
     // in_params.op_par.config.config = (void *)&in_params.cvtcolor_roi_cfg;
     // in_params.op_par.config.size = sizeof(in_params.cvtcolor_roi_cfg);    
-    in_params.op_par.config_op_params = config_csc_op_async_roi;
-
+    in_params.op_par.config_op_params = config_color_conversion_op;
+    in_params.op_par.update_cfg = update_cvtcolor_roi;
+    in_params.op_par.config.config = (void *)&in_params.cvtcolor_roi_cfg;
+    in_params.op_par.config.size = sizeof(in_params.cvtcolor_roi_cfg);
     // stream->op_async->block_num = in_params.op_par.block_num;
     vaccRet = vapp_run_op_multi_async(devID, &in_params.op_par, stream);
     if(vaccRet!= rtSuccess){
@@ -421,8 +311,10 @@ VappStatus vappiRGB2RGBP_8u_C3P3R_Ctx(unsigned int devID, const Vapp8u * pSrc, V
     in_params.op_par.block_num = nRoiNumber;
     // in_params.op_par.config.config = (void *)&in_params.cvtcolor_roi_cfg;
     // in_params.op_par.config.size = sizeof(in_params.cvtcolor_roi_cfg);    
-    in_params.op_par.config_op_params = config_csc_op_async_roi;
-    
+    in_params.op_par.config_op_params = config_color_conversion_op;
+    in_params.op_par.update_cfg = update_cvtcolor_roi;
+    in_params.op_par.config.config = (void *)&in_params.cvtcolor_roi_cfg;
+    in_params.op_par.config.size = sizeof(in_params.cvtcolor_roi_cfg);    
 
     // stream->op_async->block_num = in_params.op_par.block_num;
     vaccRet = vapp_run_op_multi_async(devID, &in_params.op_par, stream);
