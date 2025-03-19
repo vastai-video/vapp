@@ -173,6 +173,12 @@ source env.sh
 104. rgbp to rgb888    
 #./bin/test --inputfile out_planar.rgb --outputfile out24.rgb --input_size 7680x4320 --vframes 1 --test_case 104
 
+106. nv12 rgb/p
+#./bin/test --inputfile nv12_1080x1920.yuv --outputfile 1080x1920_plannar.rgb(1080x1920_interleaved.rgb) --input_size 1080x1920 --vframes 1 --test_case 106
+
+107. rgb/p to nv12
+#./bin/test --inputfile 1080x1920_plannar.rgb(1080x1920_interleaved.rgb) --outputfile nv12_1080x1920.yuv --input_size 1080x1920 --vframes 1 --test_case 106
+
 200. nv12 overlay  
 ./bin/test --inputfile /home/vastai/simonz/input/jzztd_nv12_100.yuv --outputfile out.yuv --input_size 1920x1080 --layer_size 200x200 --vframes 1 --test_case 200
 

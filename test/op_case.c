@@ -52,6 +52,8 @@ typedef enum{
     VAPPI_OP_COLORTOGRAY_CTX,
     VAPPI_OP_COLORP2C_CTX, //104
     VAPPI_OP_COLORC2P_CTX,
+    VAPPI_OP_COLOR_NV12TORGBP_CTX, //106 same as VAPPI_OP_COLOR_NV12TORGB_CTX
+    VAPPI_OP_COLOR_RGBPTONV12_CTX, //107 same as VAPPI_OP_COLOR_RGBTONV12_CTX
     //arithmetic and logical
     VAPPI_OP_NV12OVERLAY_CTX = VAPPI_OP_NV12CSC_CTX + SUB_MODULE_MAX_OPS,
     VAPPI_OP_BITDEPTHCVT_CTX,
@@ -1378,7 +1380,103 @@ int run_test_case(CommandLineArgs *args)
         vappSafeCall(vastStreamDestroy(op_cfg.device_id, stream), status); 
         
         printf("avg %" PRId64 " us\n", sum/args->frame_count);
-        break; 
+        break;
+        case VAPPI_OP_COLOR_NV12TORGBP_CTX:
+        op_cfg.image_size = op_cfg.plane_size*3/2;    
+        op_cfg.out_image_size = op_cfg.image_size*2;
+        op_cfg.nDstStep = op_cfg.nSrcStep;
+        int nv12_to_rgb_roi_num = 1;
+
+        pSrcImg = (Vapp8u*)malloc(op_cfg.image_size);
+        pDstImg = (Vapp8u*)malloc(op_cfg.out_image_size);
+        vappSafeCall(vastStreamCreate(op_cfg.device_id, nv12_to_rgb_roi_num, &stream, NULL), status);
+        vappSafeCall(vastMalloc(op_cfg.device_id, (void**)&op_cfg.src_img, op_cfg.image_size), status);
+        vappSafeCall(vastMalloc(op_cfg.device_id, (void**)&op_cfg.dst_img, op_cfg.out_image_size), status);  
+        VappiShape2D nv12_src_shape = {
+            op_cfg.oSrcSize.width,
+            op_cfg.oSrcSize.height,
+            op_cfg.oSrcSize.width,
+            op_cfg.oSrcSize.height
+        };
+        VappiShape2D nv12_dst_shape = {
+            op_cfg.oSrcSize.width,
+            op_cfg.oSrcSize.height,
+            op_cfg.oSrcSize.width,
+            op_cfg.oSrcSize.height
+        };
+        for(i = 0; i < args->frame_count; i++){
+            reads = fread((void *)pSrcImg, op_cfg.image_size, 1, fp_input);
+            if(reads != 1){
+                fprintf(stderr, "fread failed. %zu\n", reads);
+                return -1;
+            }
+            rewind(fp_input);
+            vappSafeCall(vastMemcpy(op_cfg.device_id, op_cfg.src_img, pSrcImg, op_cfg.image_size, vastMemcpyHostToDevice), status); 
+            start = time_usec();
+            vappSafeCall(vappiNV12ToRGBP_8u_P2C3_Ctx(op_cfg.device_id, //vappiNV12ToRGB_8u_P2C3_Ctx
+                                op_cfg.src_img, nv12_src_shape,  
+                                op_cfg.dst_img, nv12_dst_shape, stream), status);    
+                
+            vappSafeCall(vastStreamSynchronize(op_cfg.device_id, stream), status); 
+            end = time_usec();                                                                                      
+            elapsed =  end - start;
+            sum = sum + elapsed;
+            printf("elapsed %" PRId64 " us sum %" PRId64 " us\n", elapsed,sum);
+            vappSafeCall(vastMemcpy(op_cfg.device_id, pDstImg, op_cfg.dst_img, op_cfg.out_image_size, vastMemcpyDeviceToHost), status); 
+            fwrite(pDstImg, op_cfg.out_image_size, 1,fp_out);      
+        }
+        printf("avg %" PRId64 " us\n", sum/args->frame_count);
+        vappSafeCall(vastStreamDestroy(op_cfg.device_id, stream), status); 
+        
+        break;   
+        case VAPPI_OP_COLOR_RGBPTONV12_CTX:
+        op_cfg.image_size = op_cfg.plane_size*3;    
+        op_cfg.out_image_size = op_cfg.image_size/2;
+        op_cfg.nDstStep = op_cfg.nSrcStep;
+        int rgb_to_nv12_roi_num = 1;
+
+        pSrcImg = (Vapp8u*)malloc(op_cfg.image_size);
+        pDstImg = (Vapp8u*)malloc(op_cfg.out_image_size);
+        vappSafeCall(vastStreamCreate(op_cfg.device_id, rgb_to_nv12_roi_num, &stream, NULL), status);
+        vappSafeCall(vastMalloc(op_cfg.device_id, (void**)&op_cfg.src_img, op_cfg.image_size), status);
+        vappSafeCall(vastMalloc(op_cfg.device_id, (void**)&op_cfg.dst_img, op_cfg.out_image_size), status);  
+        VappiShape2D rgb_src_shape = {
+            op_cfg.oSrcSize.width,
+            op_cfg.oSrcSize.height,
+            op_cfg.oSrcSize.width,
+            op_cfg.oSrcSize.height
+        };
+        VappiShape2D rgb_dst_shape = {
+            op_cfg.oSrcSize.width,
+            op_cfg.oSrcSize.height,
+            op_cfg.oSrcSize.width,
+            op_cfg.oSrcSize.height
+        };
+        for(i = 0; i < args->frame_count; i++){
+            reads = fread((void *)pSrcImg, op_cfg.image_size, 1, fp_input);
+            if(reads != 1){
+                fprintf(stderr, "fread failed. %zu\n", reads);
+                return -1;
+            }
+            rewind(fp_input);
+            vappSafeCall(vastMemcpy(op_cfg.device_id, op_cfg.src_img, pSrcImg, op_cfg.image_size, vastMemcpyHostToDevice), status); 
+            start = time_usec();
+            vappSafeCall(vappiRGBPToNV12_8u_P2C3_Ctx(op_cfg.device_id, //vappiRGBToNV12_8u_P2C3_Ctx
+                                op_cfg.src_img, rgb_src_shape,  
+                                op_cfg.dst_img, rgb_dst_shape, stream), status);    
+                
+            vappSafeCall(vastStreamSynchronize(op_cfg.device_id, stream), status); 
+            end = time_usec();                                                                                      
+            elapsed =  end - start;
+            sum = sum + elapsed;
+            printf("elapsed %" PRId64 " us sum %" PRId64 " us\n", elapsed,sum);
+            vappSafeCall(vastMemcpy(op_cfg.device_id, pDstImg, op_cfg.dst_img, op_cfg.out_image_size, vastMemcpyDeviceToHost), status); 
+            fwrite(pDstImg, op_cfg.out_image_size, 1,fp_out);      
+        }
+        printf("avg %" PRId64 " us\n", sum/args->frame_count);
+        vappSafeCall(vastStreamDestroy(op_cfg.device_id, stream), status); 
+        
+        break;   
     case VAPPI_OP_ROIFLIP_RGBP_CTX:
         op_cfg.oDstSize.width = op_cfg.oSrcSize.width;
         op_cfg.oDstSize.height = op_cfg.oSrcSize.height;

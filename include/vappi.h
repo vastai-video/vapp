@@ -221,7 +221,15 @@ VAPP_API VappStatus vappiRGB2RGBP_8u_C3P3R_Ctx(unsigned int devID, const Vapp8u 
  * @{
  *
  */
-
+VappStatus vappiNV12ToRGBP_8u_P2C3_Ctx(unsigned int devID, const Vapp8u* pSrc, VappiShape2D oSrcShape, 
+                    Vapp8u* pDst, VappiShape2D oDstShape, vastStream_t vastStreamCtx);
+VappStatus vappiNV12ToRGB_8u_P2C3_Ctx(unsigned int devID, const Vapp8u* pSrc, VappiShape2D oSrcShape, 
+                    Vapp8u* pDst, VappiShape2D oDstShape, vastStream_t vastStreamCtx);
+VappStatus vappiRGBPToNV12_8u_P2C3_Ctx(unsigned int devID, const Vapp8u* pSrc, VappiShape2D oSrcShape, 
+                    Vapp8u* pDst, VappiShape2D oDstShape, vastStream_t vastStreamCtx);
+VappStatus vappiRGBToNV12_8u_P2C3_Ctx(unsigned int devID, const Vapp8u* pSrc, VappiShape2D oSrcShape, 
+                    Vapp8u* pDst, VappiShape2D oDstShape, vastStream_t vastStreamCtx);
+                    
 /**
  * 3 channel 8-bit unsigned packed RGB to 3 channel 8-bit unsigned planar YUV420 color conversion.
  *

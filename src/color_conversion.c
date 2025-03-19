@@ -333,5 +333,86 @@ VappStatus vappiRGBToYUV420_8u_C3P3R(const Vapp8u * pSrc, int nSrcStep, Vapp8u *
        return VAPP_SUCCESS;
 }
 
+static VappStatus inner_vappiNV12ToRGBX_8u_P2C3_Ctx(unsigned int devID, const Vapp8u* pSrc, VappiShape2D oSrcShape, 
+    Vapp8u* pDst, VappiShape2D oDstShape, int eRGBType, vastStream_t vastStreamCtx)
+{
+rtError_t vaccRet;
+geometry_input_params  in_params = {0};
+if(vapp_check_status(devID)!= 1){
+return VAPP_DEVICE_STATUS_ERROR;
+}
 
+if(!vastStreamCtx){
+return VAPP_BAD_ARGUMENT_ERROR;
+}
 
+if( !pSrc|| !pDst){
+return VAPP_BAD_ARGUMENT_ERROR;
+}
+
+VastStream * stream = (VastStream *)vastStreamCtx;
+const char * op_path = getenv("VASTAI_VAPP_PATH");
+if(!op_path){
+op_path = DEFAULT_OP_PATH;
+}   
+
+vaccRet =  vapp_find_op_entry(OP_CVTCOLOR_U8, stream);
+if(vaccRet!= rtSuccess){
+VAPP_LOG(VAPP_LOG_ERROR, "vapp_run_op nv12 cvt rgbp failed.\n");
+return vaccRet;           
+}       
+in_params.op_par.inout_addr[0] = (uint64_t)pSrc;
+in_params.op_par.inout_addr[1] = (uint64_t)pDst;
+
+in_params.cvtcolor_cfg.iimage_width        = oSrcShape.width;    
+in_params.cvtcolor_cfg.iimage_height       = oSrcShape.height;
+in_params.cvtcolor_cfg.iimage_width_pitch  = oSrcShape.wPitch;
+in_params.cvtcolor_cfg.iimage_height_pitch = oSrcShape.hPitch;
+
+in_params.cvtcolor_cfg.oimage_width        = oDstShape.width;    
+in_params.cvtcolor_cfg.oimage_height       = oDstShape.height;
+in_params.cvtcolor_cfg.oimage_width_pitch  = oDstShape.wPitch;
+in_params.cvtcolor_cfg.oimage_height_pitch = oDstShape.hPitch;  
+in_params.cvtcolor_cfg.cvt_type = eRGBType;
+
+in_params.cvtcolor_cfg.color_space = COLOR_SPACE_BT601;
+in_params.nOutputs = 1;
+in_params.op_par.priv_params = &in_params;
+in_params.op_par.block_num = 1;
+
+in_params.op_par.config.config = (void *)&in_params.cvtcolor_cfg;
+in_params.op_par.config.size = sizeof(in_params.cvtcolor_cfg);
+in_params.op_par.config_op_params = config_color_conversion_op;
+
+vaccRet = vapp_run_op_multi_async(devID, &in_params.op_par, stream);
+if(vaccRet!= rtSuccess){
+VAPP_LOG(VAPP_LOG_ERROR, "vapp_run_op rgb24 resize_m failed.\n");
+return vaccRet;           
+}   
+free(in_params.pSizeROI); 
+return VAPP_SUCCESS;       
+}
+
+VappStatus vappiNV12ToRGBP_8u_P2C3_Ctx(unsigned int devID, const Vapp8u* pSrc, VappiShape2D oSrcShape, 
+    Vapp8u* pDst, VappiShape2D oDstShape, vastStream_t vastStreamCtx)
+{
+return inner_vappiNV12ToRGBX_8u_P2C3_Ctx(devID, pSrc, oSrcShape, pDst, oDstShape, COLOR_YUV2RGB_NV12, vastStreamCtx);
+}
+
+VappStatus vappiNV12ToRGB_8u_P2C3_Ctx(unsigned int devID, const Vapp8u* pSrc, VappiShape2D oSrcShape, 
+    Vapp8u* pDst, VappiShape2D oDstShape, vastStream_t vastStreamCtx)
+{
+return inner_vappiNV12ToRGBX_8u_P2C3_Ctx(devID, pSrc, oSrcShape, pDst, oDstShape, COLOR_YUV2RGB_NV12_888, vastStreamCtx);
+}
+
+VappStatus vappiRGBPToNV12_8u_P2C3_Ctx(unsigned int devID, const Vapp8u* pSrc, VappiShape2D oSrcShape, 
+    Vapp8u* pDst, VappiShape2D oDstShape, vastStream_t vastStreamCtx)
+{
+return inner_vappiNV12ToRGBX_8u_P2C3_Ctx(devID, pSrc, oSrcShape, pDst, oDstShape, COLOR_RGB2YUV_NV12_PLANAR, vastStreamCtx);
+}
+
+VappStatus vappiRGBToNV12_8u_P2C3_Ctx(unsigned int devID, const Vapp8u* pSrc, VappiShape2D oSrcShape, 
+    Vapp8u* pDst, VappiShape2D oDstShape, vastStream_t vastStreamCtx)
+{
+return inner_vappiNV12ToRGBX_8u_P2C3_Ctx(devID, pSrc, oSrcShape, pDst, oDstShape, COLOR_RGB2YUV_NV12_888, vastStreamCtx);
+}
